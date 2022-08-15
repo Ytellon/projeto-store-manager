@@ -90,4 +90,26 @@ describe("teste Para Model Products", () => {
       expect(resultado.id).to.equal(1);
     });
   });
+  describe("teste para create", () => {
+    afterEach(() => {
+      Sinon.restore();
+    });
+    it("retorna um objeto", async () => {
+      const resultExecute = [{}];
+      Sinon.stub(connection, "execute").resolves([resultExecute]);
+
+      const resultado = await productsModels.create("laço da verdade");
+
+      expect(resultado).to.be.an("object");
+    });
+    it('verificando se foi criado o produto', async () => {
+      const resultExecute = [{}];
+      Sinon.stub(connection, "execute").resolves([resultExecute]);
+
+      const resultado = await productsModels.create("laço da verdade");
+
+      expect(resultado).to.all.keys("id", "name");
+      expect(resultado.name).to.equal("laço da verdade");
+    });
+  });
 });

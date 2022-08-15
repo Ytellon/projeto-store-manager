@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const productValidation = require('../middlewares/productValidation');
 
 const route = Router();
 
@@ -8,6 +9,6 @@ route.get('/', productsController.getProducts);
 
 route.get('/:id', productsController.getProductById);
 
-route.post('/', productsController.create);
+route.post('/', productValidation, productsController.create);
 
 module.exports = route;
