@@ -93,4 +93,37 @@ describe('teste para controller products', () => {
       });
     });
   })
+  describe('teste para createProduct', () => {
+    afterEach(() => {
+      Sinon.restore();
+    });
+    it('verifica sucesso da func', async () => {
+      const resultExecute = {
+        id: 4,
+        name: "laço da verdade",
+      }
+      Sinon.stub(productService, "create").resolves(resultExecute);
+      const req = {};
+      const res = {};
+      req.body = { name: "laço da verdade" };
+      res.status = Sinon.stub().returns(res);
+      res.json = Sinon.stub().returns();
+      await productsController.create(req, res);
+      expect(res.status.calledWith(201)).to.be.true;
+      expect(resultExecute).to.be.an("object");
+      expect(resultExecute).to.be.not.empty;
+      expect(res.json.calledWith(resultExecute)).to.be.true;
+    });
+    it('verifica erro ao criar', async () => {
+      Sinon.stub(productService, "create").resolves(null);
+      const req = {};
+      const res = {};
+      req.body = { name: "laço da verdade" };
+      res.status = Sinon.stub().returns(res);
+      res.json = Sinon.stub().returns();
+      await productsController.create(req, res);
+      expect(res.status.calledWith(400)).to.be.true;
+      expect(res.json.calledWith({ message: 'Product not created' })).to.be.true;
+    });
+  });
 })
